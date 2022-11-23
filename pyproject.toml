@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "sitwith-ref-fastapi"
+version = "0.1.0"
+description = ""
+authors = ["Jeonghyeon <89664413+JeongHyeon-01@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "sitwith_ref_fastapi"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.87.0"
+uvicorn = "^0.20.0"
+python-dotenv = "^0.21.0"
+pymysql = "^1.0.2"
+sqlalchemy = "^1.4.44"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
