@@ -1,4 +1,4 @@
-#!/home/jeonghyeon/piolink/python/sitwith_ref_fastapi/venv/bin/python3
+#!/Users/jeonghyeonhwang/sitwith_ref_fastapi/venv/bin/python3.9
 # -*- coding: utf-8 -*-
 import re
 import sys
