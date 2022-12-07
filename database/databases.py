@@ -14,12 +14,9 @@ DB_DATABASE = os.getenv("DB_DATABASE")
 DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
 
 engine = create_engine(DATABASE_URL)
-SessionLocal = scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=engine))
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base= declarative_base()
-
-
-
 
 def get_db():
     db = SessionLocal()

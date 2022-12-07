@@ -1,18 +1,22 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class ResponseUser(BaseModel):
-    id : int
-    username : str
-    password : str
+class UserBase(BaseModel):
     email : str
-    is_activate : Optional[bool] = None
 
-    class Config:
-        orm_mode = True
-        
-        
-class RequestUser(BaseModel):
+class UserCreate(UserBase):
     username : str
     password : str
-    email : str
+    check_password : str
+        
+class User(UserBase):
+    username : str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    user_id : int
+    username: str | None = None
