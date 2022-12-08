@@ -26,13 +26,15 @@ def get_user_by_email(db : Session, email : str):
 def create_user(db : Session, skip : int = 0, limit : int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
 
+
 def create_user(db : Session, user : schema.UserCreate):
     db_user = models.User(
         email = user.email,
-        password = user.password
+        username = user.username,
+        password = get_password_hash(user.password)
     )
 
-    db.app(db_user)
+    db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
