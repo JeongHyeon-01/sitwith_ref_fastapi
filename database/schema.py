@@ -12,10 +12,12 @@ class UserCreate(UserBase):
 class User(UserBase):
     username : str
 
+class UserLogin(UserBase):
+    password : str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
-
 
 class TokenData(BaseModel):
     user_id : int

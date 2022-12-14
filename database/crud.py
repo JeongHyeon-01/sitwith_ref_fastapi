@@ -1,3 +1,5 @@
+from sre_constants import SUCCESS
+import bcrypt
 from sqlalchemy.orm import Session
 from database import models,schema
 from database import schema
@@ -8,7 +10,7 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 from fastapi import HTTPException, status
-
+from core.validator import validate_email,validate_username, validate_password
 load_dotenv()
 
 secretkey = os.getenv("SECRET_KEY")
@@ -26,25 +28,24 @@ def get_user_by_email(db : Session, email : str):
 def create_user(db : Session, skip : int = 0, limit : int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
 
-
 def create_user(db : Session, user : schema.UserCreate):
     db_user = models.User(
-        email = user.email,
-        username = user.username,
-        password = get_password_hash(user.password)
+        email = validate_email(user.email),
+        username = validate_username(user.username),
+        password = get_password_hash(validate_password(user.password))
     )
 
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return SUCCESS
 
 class UserInDB(schema.User):
     hashed_password: str
 
-def get_user(db, username : str):
-    if username in db:
-        user_dict = db[username]
+def get_user(db, email : str):
+    if email in db:
+        user_dict = db[email]
         return UserInDB(**user_dict)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -61,13 +62,9 @@ def verify_password(plan_password, hashd_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
+def authenticate_user(db, email: str, password: str):
+    user = db.get(email = email)
+    is_verrified = bcrypt.checkpw(db.password.encode('utf-8'))
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
