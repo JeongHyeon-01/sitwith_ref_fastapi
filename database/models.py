@@ -1,4 +1,5 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, func, Numeric
+from sqlalchemy import Boolean, Column, ForeignKey, \
+    Integer, String, DateTime, func, Numeric
 from sqlalchemy.orm import relationship
 
 from .databases import Base
@@ -13,3 +14,10 @@ class User(Base):
     is_activate = Column(Boolean, default = True)
     created_at = Column(DateTime, default=func.utc_timestamp())
     updated_at = Column(DateTime, default=func.utc_timestamp(), onupdate=func.utc_timestamp())
+
+    
+class Category(Base):
+    __tablename__ = "categories"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title = Column(String(100), unique=True, index=True, nullable = False)

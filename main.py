@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from database.databases import Base, engine
 from database import models
-from routes import users
+from routes import users,products
 import sys
 sys.setrecursionlimit(9999)
 app = FastAPI()
@@ -21,11 +21,9 @@ app.add_middleware(
 # Base.metadata.create_all(bind=engine)
 
 app.include_router(users.router)
-
+app.include_router(products.router)
 
 @app.get("/")
 async def root():
-    print(Base.metadata.tables.keys())
-    print(dir(models.__name__), models.__name__)
     Base.metadata.create_all(bind=engine)
     return {"message" : "Hello JeongHyeon Wellcome Back"}

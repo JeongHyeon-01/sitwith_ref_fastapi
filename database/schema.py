@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional, Union
 
 class UserBase(BaseModel):
     email : str
@@ -22,3 +22,10 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     user_id : int
     username: str | None = None
+    
+class CategoryBase(BaseModel):
+    id : int | None = None
+    title : str
+
+class CategoryCreate(BaseModel):
+    title : str
