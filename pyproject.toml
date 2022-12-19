@@ -16,6 +16,7 @@ sqlalchemy = "^1.4.44"
 jose = "^1.0.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+loguru = "^0.6.0"
 
 
 [build-system]

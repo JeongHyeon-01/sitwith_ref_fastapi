@@ -1,7 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, \
-    Integer, String, DateTime, func, Numeric
+    Integer, String, DateTime, func, Float, Numeric
 from sqlalchemy.orm import relationship
-
 from .databases import Base
 
 class User(Base):
@@ -21,3 +20,15 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String(100), unique=True, index=True, nullable = False)
+
+    products = relationship("Product", back_populates = "categories")
+    
+class Product(Base):
+    __tablename__ = "products"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True, index=True, nullable = False)
+    price = Column(Float(precision=3,asdecimal=True),nullable = False)
+    description = Column(String(255))
+    category_id = Column(Integer, ForeignKey("categories.id"))
+    categories  = relationship("Category", back_populates = "products")

@@ -91,10 +91,7 @@ def decode_access_token(token : str):
 def refresh_access_token(token : str):
     token_data = decode_access_token(token)
     to_encode = token_data.copy()
-    if token_expire:
-        expire = datetime.utcnow()+ token_expire
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+    expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp" : expire})
     encoded_jwt = jwt.encode(to_encode, secretkey, algorithm)
     return encoded_jwt
@@ -110,3 +107,15 @@ def create_category(db : Session, item : schema.CategoryCreate):
     db.refresh(db_item)
     return db_item
 
+def create_product(db : Session, item : schema.ProductCreate):
+    db_item = models.Product(
+        name = item.name,
+        price = float(item.price),
+        category_id = item.category_id,
+        description = item.description
+    )
+
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item

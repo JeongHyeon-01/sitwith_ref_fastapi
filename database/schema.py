@@ -26,6 +26,20 @@ class TokenData(BaseModel):
 class CategoryBase(BaseModel):
     id : int | None = None
     title : str
+    
+    class Config:
+        orm_mode = True
 
 class CategoryCreate(BaseModel):
     title : str
+    
+class ProductBase(BaseModel):
+    name : str
+    price : float
+    description : str
+    
+class ProductCreate(ProductBase):
+    category_id : int
+    
+    class Config:
+        orm_mode = True
