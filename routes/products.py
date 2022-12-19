@@ -12,11 +12,17 @@ router = APIRouter(
 @router.get("/category")
 async def read_category(
     db : Session = Depends(databases.get_db)
-):
-    categories = crud.get_category(db=db)
-    
-    return categories
+):  
+    try:
+        categories = crud.get_category(db=db)
 
+        return categories
+    except Exception as e:
+        LOG.error(str(e))
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
 @router.post("/category")
 async def create_category(
     items : schema.CategoryCreate,
@@ -38,6 +44,20 @@ async def create_category(
             detail=msg
         )
 
+@router.get("/product")
+async def read_all_products(
+    db : Session = Depends(databases.get_db)
+):
+    try:
+        return crud.get_all_products(db=db)
+    
+    except Exception as e:
+        LOG.error(str(e))
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+        
 @router.post("/product")
 async def create_product(
     items : schema.ProductCreate,

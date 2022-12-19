@@ -32,3 +32,9 @@ class Product(Base):
     description = Column(String(255))
     category_id = Column(Integer, ForeignKey("categories.id"))
     categories  = relationship("Category", back_populates = "products")
+    
+# class Color(Base):
+#     __tablename__ = "colors"
+    
+#     id = Column(id = Column(Integer, primary_key=True, index=True, autoincrement=True))
+    

@@ -119,3 +119,6 @@ def create_product(db : Session, item : schema.ProductCreate):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+def get_all_products(db : Session):
+    return db.query(models.Product).all()
