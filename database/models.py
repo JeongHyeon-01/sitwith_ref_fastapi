@@ -33,8 +33,24 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("categories.id"))
     categories  = relationship("Category", back_populates = "products")
     
+    productcolors = relationship("ProductColor", back_populates = "products")
+    
 class Color(Base):
     __tablename__ = "colors"
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(100), unique=True, index=True, nullable = False)
+    
+    colorsproduct = relationship("ProductColor", back_populates = "colors")
+    
+class ProductColor(Base):
+    __tablename__ = "productcolors"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    inventory = Column(Integer, default=0)
+    color_id = Column(Integer, ForeignKey("colors.id"))
+    product_id = Column(Integer, ForeignKey("products.id"))
+    
+    colors = relationship("Color", back_populates="colorsproduct")
+    products = relationship("Product", back_populates="productcolors")
+    

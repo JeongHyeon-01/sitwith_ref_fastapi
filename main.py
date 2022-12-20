@@ -29,7 +29,6 @@ app.include_router(products.router)
 
 @app.get("/")
 async def root():
-    print(Path("./log/"))
     Base.metadata.create_all(bind=engine)
     LOG.success("Welcome Back")
     return {"message" : "Hello JeongHyeon Wellcome Back"}
