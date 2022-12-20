@@ -5,10 +5,9 @@ import logging
 from logging import Handler, LogRecord
 from pathlib import PurePath
 from typing import Optional, Union
-
+import datetime
 import loguru
 from loguru import logger
-
 
 LOG = loguru.logger
 
@@ -61,6 +60,9 @@ def setup(
         serialize=False,
         enqueue=False,
         catch=True,
+        rotation="12:00",
+        retention="1 days",
+        compression="zip"
     )
-
+    
     logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
