@@ -37,9 +37,24 @@ class ProductBase(BaseModel):
     name : str
     price : float
     description : str
-    
+
 class ProductCreate(ProductBase):
     category_id : int
     
+    class Config:
+        orm_mode = True
+
+class ColorBase(BaseModel):
+    name: str
+    
+class ColorCreate(ColorBase):
+    pass
+
+class ProductColorBase(BaseModel):
+    inventory : int
+
+class ProductColorCreate(ProductColorBase):
+    color : int
+    product_id : int
     class Config:
         orm_mode = True

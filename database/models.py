@@ -53,4 +53,3 @@ class ProductColor(Base):
     
     colors = relationship("Color", back_populates="colorsproduct")
     products = relationship("Product", back_populates="productcolors")
-    

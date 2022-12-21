@@ -61,10 +61,12 @@ async def read_all_products(
 @router.post("/product")
 async def create_product(
     items : schema.ProductCreate,
+    productcolor : schema.ProductColorCreate,
     db : Session = Depends(databases.get_db)
 ):
     try:
         item = crud.create_product(db=db,item=items)
+        productcolors = crud.create_product_color(db=db, item =productcolor)
         return item
     except Exception as e:
         LOG.error(str(e))
@@ -75,4 +77,38 @@ async def create_product(
         return HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=msg
+        )
+        
+@router.post("/color")
+async def create_color(
+    items : schema.ColorCreate,
+    db : Session = Depends(databases.get_db)
+):
+    try:
+        color = crud.create_color(db=db, item=items)
+        return color
+    
+    except Exception as e:
+        LOG.error(str(e))
+        if "1062" in str(e):
+            msg = f"Duplicate entry '{items.name}'"
+        else:
+            msg = str(e)
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=msg
+        )
+
+@router.get("/color")
+async def read_all_colors(
+    db : Session = Depends(databases.get_db)
+):
+    try:
+        return crud.get_all_colors(db=db)
+    
+    except Exception as e:
+        LOG.error(str(e))
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
         )

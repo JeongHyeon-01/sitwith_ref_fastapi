@@ -122,3 +122,40 @@ def create_product(db : Session, item : schema.ProductCreate):
 
 def get_all_products(db : Session):
     return db.query(models.Product).all()
+
+def create_color(db : Session, item : schema.ColorCreate):
+    db_item = models.Color(
+        name = item.name,
+    )
+
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def get_all_colors(db : Session):
+    return db.query(models.Color).all()
+
+def create_product_color(db: Session, item: schema.ProductColorCreate):
+    try:
+        db_item = models.ProductColor(
+            inventory = item.inventory,
+            product_id = db.query(models.Product).get(models.Product.id == item.product_id).id,
+            color_id = db.query(models.Color).get(models.Color.id == item.color_id).id,
+        )
+        
+        db.add(db_item)
+        db.commit()
+        db.refresh(db_item)
+        return db_item
+    except:
+        db.rollback()
+        raise Exception
+
+def get_all_inventory(db : Session):
+    return db.query(models.Color).all()
+
+def get_color_products(db: Session, color : str):
+    color_id = db.query(models.Color).filter(models.Color.name == color).first()
+    product = db.query(models.ProductColor).filter(models.ProductColor.id == color_id.id).all()
+    return product
